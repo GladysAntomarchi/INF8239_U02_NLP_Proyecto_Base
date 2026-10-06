@@ -17,16 +17,25 @@ Copie `.env.example` como `.env` y configure el dataset aprobado.
 
 ## Dataset
 
-Complete `docs/DATASET_CARD.md`, el diccionario, la licencia y el procedimiento de obtención.
-El archivo `data/sample/demo_text.csv` solamente comprueba la arquitectura.
+### Dataset seleccionado
 
-## Entrenamiento
+Para LAB04 se seleccionó **Inflation Research Abstracts Classification**, disponible públicamente en UCI Machine Learning Repository:
+
+https://archive.ics.uci.edu/dataset/1125/inflation+research+abstracts+classification
+
+El archivo original utilizado es:
+
+`classified_abstracts.json`
+
+El archivo original debe colocarse en:
+
+`data/raw/classified_abstracts.json`
+
+Los datos originales no se incluyen en Git.
+
+### Preparación de los datos
+
+Para generar la versión utilizada por el proyecto:
 
 ```bash
-uv run python scripts/train_text.py
-uv run streamlit run app/streamlit_app.py
-```
-
-## Interpretación
-
-Toda conclusión debe separar observación, evidencia, interpretación y decisión.
+uv run python scripts/prepare_data.py
