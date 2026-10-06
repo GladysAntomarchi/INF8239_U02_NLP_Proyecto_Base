@@ -120,3 +120,33 @@ Este dataset y los modelos derivados no deben utilizarse para:
 - inferir causalidad;
 - aplicar el modelo directamente a otros dominios sin validación;
 - tomar decisiones automáticas de alto impacto.
+
+## Cierre interpretativo
+
+**Resultado principal:**  
+Se localizó, seleccionó, documentó y auditó el corpus público *Inflation Research Abstracts Classification*. El proyecto quedó configurado de forma reproducible con Python 3.12, `uv`, rutas relativas y pruebas automatizadas.
+
+**Evidencia de calidad y procedencia:**  
+El corpus proviene del UCI Machine Learning Repository, posee licencia CC BY 4.0 y contiene 1,138 abstracts en inglés. La auditoría identificó 13 textos duplicados y una distribución aproximada de 79.09 % para `Label=0` y 20.91 % para `Label=1`. El contrato de datos y la suite completa finalizaron correctamente.
+
+**Riesgo o sesgo identificado:**  
+Existe desbalance entre las clases y presencia de textos duplicados. Además, el corpus está limitado a abstracts académicos en inglés relacionados con inflación, por lo que no representa otros idiomas, tipos documentales ni dominios.
+
+**Decisión de aprobación o rechazo:**  
+El dataset fue aprobado para los laboratorios posteriores porque posee una variable textual interpretable, un target binario original, licencia identificable, fuente reproducible y tamaño suficiente para los ejercicios académicos previstos.
+
+**Limitación que debe comunicarse:**  
+Los resultados obtenidos con este corpus no deben generalizarse automáticamente a otros dominios o poblaciones. El desbalance puede favorecer a la clase mayoritaria si se interpretan únicamente métricas globales como accuracy.
+
+**Siguiente verificación:**  
+Antes del modelado se eliminarán los abstracts duplicados y se utilizará una partición estratificada. En LAB05 se evaluarán los modelos mediante F1 macro, métricas por clase y matriz de confusión.
+
+## Interpretación del modelo y matriz de confusión
+
+**Observación:** la regresión logística clasificó correctamente 252 de 282 observaciones, con 14 falsos positivos y 16 falsos negativos.
+
+**Evidencia:** la matriz de confusión muestra 209 verdaderos negativos, 43 verdaderos positivos, 14 falsos positivos y 16 falsos negativos. La clase `1` presenta mayor dificultad, con un recall de 0.73.
+
+**Interpretación:** el modelo distingue adecuadamente ambas clases, pero presenta mayor dificultad para reconocer abstracts pertenecientes a la clase `1`. El análisis preliminar sugiere que parte de los errores se debe a la similitud léxica entre artículos de predicción estadística/econométrica y artículos relacionados con machine learning o inteligencia artificial.
+
+**Decisión:** se conserva la regresión logística como modelo seleccionado, pero se documenta esta limitación y se recomienda analizar los errores antes de considerar su publicación o uso fuera del contexto académico.
