@@ -1,6 +1,7 @@
 # INF-8239 · Unidad 02 · Proyecto NLP
 
-Autor académico: Edwin Ramón José Nolasco
+Profesor: Edwin Ramón José Nolasco
+Estudiante: Gladys Antomarchi
 
 Proyecto base para LAB04–LAB06. No sustituya la comprensión por ejecución mecánica.
 
