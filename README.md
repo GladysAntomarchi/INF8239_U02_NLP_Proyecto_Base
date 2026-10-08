@@ -418,3 +418,117 @@ Las predicciones del modelo no constituyen decisiones automáticas y deben inter
 - Pruebas automatizadas: 6 aprobadas.
 - Modelo seleccionado: Logistic Regression con TF-IDF.
 - F1 macro obtenido: 0.837.
+
+## LAB06 · Embeddings y análisis responsable de redes
+
+En LAB06 se entrenó un modelo Word2Vec sobre el corpus textual del proyecto y se realizó un análisis estructural de una red de demostración utilizando centralidades, comunidades y modularidad.
+
+### Embeddings con Word2Vec
+
+Para entrenar los embeddings:
+
+```bash
+uv run python scripts/embeddings_network.py --word inflation
+```
+
+Resultado base con `window=5`:
+
+- Vocabulario: 10,159 términos.
+- Cobertura: 1.0.
+- Palabra analizada: `inflation`.
+
+Entre los vecinos obtenidos aparecieron términos como:
+
+- `observed`
+- `unemployment`
+- `interest`
+- `level`
+- `exchange`
+- `aggregate`
+
+La similitud entre palabras se interpreta como proximidad de contexto dentro de este corpus y no como sinonimia universal.
+
+### Experimento con el parámetro `window`
+
+Se comparó el valor original `window=5` con `window=10`.
+
+Con `window=10`:
+
+- el vocabulario se mantuvo en 10,159 términos;
+- la cobertura permaneció en 1.0;
+- cambiaron los vecinos semánticos de `inflation`.
+
+Entre los vecinos obtenidos con `window=10` aparecieron términos como:
+
+- `unemployment`
+- `level`
+- `growth`
+- `aggregate`
+- `gap`
+- `observed`
+
+El cambio de `window` no modificó la cobertura ni el tamaño del vocabulario, pero sí cambió el tipo de contexto capturado. Una ventana mayor incorpora relaciones más amplias dentro del texto y puede reflejar asociaciones temáticas más generales.
+
+### Red de demostración
+
+Para ejecutar los embeddings junto con el análisis de red:
+
+```bash
+uv run python scripts/embeddings_network.py --word inflation --network-demo
+```
+
+La red de demostración produjo:
+
+- 34 nodos.
+- 78 aristas.
+- 3 comunidades detectadas.
+- Modularidad: 0.411.
+
+Los artefactos generados son:
+
+```text
+reports/centralities.csv
+reports/network.png
+reports/social_network.graphml
+models/word2vec.model
+```
+
+### Centralidades
+
+Los resultados mostraron que:
+
+- el nodo `33` obtuvo la mayor centralidad de grado: `0.5152`;
+- el nodo `33` obtuvo el mayor PageRank: `0.0970`;
+- el nodo `0` obtuvo la mayor centralidad de intermediación o betweenness: `0.4376`.
+
+Estas métricas describen propiedades estructurales distintas.
+
+Una centralidad de grado alta indica mayor cantidad relativa de conexiones directas. Una betweenness alta indica mayor participación en caminos mínimos entre nodos. Un PageRank alto indica conexión con nodos que también tienen relevancia estructural.
+
+### Interpretación responsable
+
+Es válido afirmar que ciertos nodos presentan mayor conectividad, intermediación o relevancia estructural según una métrica específica.
+
+No es válido afirmar únicamente a partir de estas métricas que un nodo sea “la persona más influyente”, líder real o causa del comportamiento de la red.
+
+De igual forma, las comunidades detectadas representan agrupaciones estructurales según el algoritmo y no identidades sociales definitivas.
+
+### Evidencia y documentación
+
+La interpretación completa de LAB06 se encuentra en:
+
+```text
+reports/lab06_embeddings_network.md
+```
+
+Las pruebas automatizadas se ejecutaron con:
+
+```bash
+uv run pytest tests/test_embeddings_network.py -q
+```
+
+Resultado:
+
+```text
+2 passed
+```
